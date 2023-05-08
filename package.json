@@ -1,0 +1,27 @@
+{
+  "name": "deno-kv.sw",
+  "version": "1.0.0",
+  "description": "![🚧 Under construction 👷‍♂️](https://i.imgur.com/LEP2R3N.png)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^2.8.8",
+    "prettier-plugin-jsdoc": "^0.4.2",
+    "prettier-plugin-packagejson": "^2.4.3",
+    "typedoc": "^0.24.7",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.5",
+    "vite-plugin-dts": "^2.3.0",
+    "vite-plugin-no-bundle": "^2.0.2",
+    "vitest": "^0.31.0"
+  },
+  "dependencies": {
+    "sqlite": "^4.2.0",
+    "sqlite3": "^5.1.6"
+  }
+}
