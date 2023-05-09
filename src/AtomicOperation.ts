@@ -7,7 +7,7 @@ import type KvKey from "./KvKey";
 import type AtomicCheck from "./AtomicCheck";
 import type KvCommitResult from "./KvCommitResult";
 import type KvCommitError from "./KvCommitError";
-import kvAtomicWrite from "./internal/kvAtomicWrite";
+import kvAtomicWrite from "./internal/op_kv_atomic_write";
 import KvU64 from "./KvU64";
 
 /**
