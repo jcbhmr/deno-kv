@@ -1,96 +1,66 @@
-import { std } from "./rs-ponyfill"
+import { std, Result, Option } from "./rs-ponyfill"
 import * as codec from "./codec"
-const crate = { codec }
 // Copyright 2018-2023 the Deno authors. All rights reserved. MIT license.
 
 const RefCell =  std.cell.RefCell;
+type RefCell = std.cell.RefCell;
 const Ordering = std.cmp.Ordering;
 const NonZeroU32 = std.num.NonZeroU32;
+type NonZeroU32 = std.num.NonZeroU32;
 const Rc = std.rc.Rc;
+type Rc = std.rc.Rc;
 
-const async_trait = async_trait.async_trait;
 const AnyError = deno_core.error.AnyError;
+type AnyError = deno_core.error.AnyError;
 const OpState = deno_core.OpState;
+type OpState = deno_core.OpState;
 const BigInt = num_bigint.BigInt;
+type BigInt = num_bigint.BigInt;
 
-const canonicalize_f64 = crate.codec.canonicalize_f64;
+const canonicalize_f64 = codec.canonicalize_f64;
 
-#[async_trait(?Send)]
-pub trait DatabaseHandler {
-  type DB: Database + 'static;
-
-  async fn open(
-    &self,
+interface DatabaseHandler<DB extends Database> {
+  async open(
+    this: DatabaseHandler<DB>,
     state: Rc<RefCell<OpState>>,
     path: Option<String>,
-  ) -> Result<Self.DB, AnyError>;
+  ): Result<DB, AnyError>;
 }
 
-#[async_trait(?Send)]
-pub trait Database {
-  async fn snapshot_read(
-    &self,
+export interface Database {
+  async snapshot_read(
+    this: Database,
     requests: Vec<ReadRange>,
     options: SnapshotReadOptions,
-  ) -> Result<Vec<ReadRangeOutput>, AnyError>;
+  ): Result<Vec<ReadRangeOutput>, AnyError>;
 
-  async fn atomic_write(
-    &self,
+  async atomic_write(
+    this: Database,
     write: AtomicWrite,
-  ) -> Result<Option<CommitResult>, AnyError>;
+  ): Result<Option<CommitResult>, AnyError>;
 }
 
-/// Options for a snapshot read.
-pub struct SnapshotReadOptions {
-  pub consistency: Consistency,
+export class SnapshotReadOptions {
+  constructor(public consistency: Consistency){}
 }
 
-/// The consistency of a read.
-#[derive(Eq, PartialEq, Copy, Clone, Debug)]
-pub enum Consistency {
+export enum Consistency {
   Strong,
   Eventual,
 }
 
-/// A key is for a KV pair. It is a vector of KeyParts.
-///
-/// The ordering of the keys is defined by the ordering of the KeyParts. The
-/// first KeyPart is the most significant, and the last KeyPart is the least
-/// significant.
-#[derive(Eq, PartialEq, Ord, PartialOrd, Clone, Debug)]
-pub struct Key(pub Vec<KeyPart>);
+export class Key extends Vec<KeyPart> {}
 
-/// A key part is single item in a key. It can be a boolean, a double float, a
-/// variable precision signed integer, a UTF-8 string, or an arbitrary byte
-/// array.
-///
-/// The ordering of a KeyPart is dependent on the type of the KeyPart.
-///
-/// Between different types, the ordering is as follows: arbitrary byte array <
-/// UTF-8 string < variable precision signed integer < double float < false < true.
-///
-/// Within a type, the ordering is as follows:
-/// - For a **boolean**, false is less than true.
-/// - For a **double float**, the ordering must follow -NaN < -Infinity < -100.0 < -1.0 < -0.5 < -0.0 < 0.0 < 0.5 < 1.0 < 100.0 < Infinity < NaN.
-/// - For a **variable precision signed integer**, the ordering must follow mathematical ordering.
-/// - For a **UTF-8 string**, the ordering must follow the UTF-8 byte ordering.
-/// - For an **arbitrary byte array**, the ordering must follow the byte ordering.
-///
-/// This means that the key part `1.0` is less than the key part `2.0`, but is
-/// greater than the key part `0n`, because `1.0` is a double float and `0n`
-/// is a variable precision signed integer, and the ordering types obviously has
-/// precedence over the ordering within a type.
-#[derive(Clone, Debug)]
-pub enum KeyPart {
-  Bytes(Vec<u8>),
-  String(String),
-  Int(BigInt),
-  Float(f64),
-  False,
-  True,
-}
+export type KeyPart =
+  | { kind: "Bytes" } & Vec<u8>
+  | { kind: "String" } & String
+  | {kind: Int } & BigInt
+  | {kind: Float } & f64
+  | { kind: False }
+  | {kind: True }
 
-impl KeyPart {
+
+export class KeyPart {
   fn tag_ordering(&self) -> u8 {
     match self {
       KeyPart.Bytes(_) => 0,

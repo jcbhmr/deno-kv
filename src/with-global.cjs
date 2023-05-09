@@ -30,8 +30,8 @@ function withGlobal(variables, callback) {
       forEach(backups, (value, name) => {
         window[name] = value;
       });
-    if (returnValue && typeof returnValue.then === "function") {
-      returnValue.then(cleanup, cleanup);
+    if (typeof returnValue?.then === "function") {
+      returnValue = returnValue.then(cleanup, cleanup);
     } else {
       cleanup();
     }

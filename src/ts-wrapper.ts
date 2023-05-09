@@ -1,4 +1,4 @@
-import getIntrinsc from "get-intrinsic";
+import getIntrinsic from "get-intrinsic";
 import withGlobal from "./with-global.cjs";
 import {
   op_kv_database_open,
@@ -23,15 +23,15 @@ const core = { ops, opAsync, close, deserialize, serialize };
 const Deno = { core };
 
 const primordials = {
-  AsyncGeneratorPrototype: getIntrinsc("%AsyncGeneratorPrototype%"),
-  BigIntPrototypeToString: getIntrinsc("%BigInt.prototype.toString%"),
-  ObjectFreeze: getIntrinsc("%Object.freeze%"),
-  ObjectGetPrototypeOf: getIntrinsc("%Object.getPrototypeOf%"),
-  ObjectPrototypeIsPrototypeOf: getIntrinsc("%Object.prototype.isPrototypeOf%"),
-  StringPrototypeReplace: getIntrinsc("%String.prototype.replace%"),
-  SymbolFor: getIntrinsc("%Symbol.for%"),
-  SymbolToStringTag: getIntrinsc("%Symbol.toStringTag%"),
-  Uint8ArrayPrototype: getIntrinsc("%Uint8Array.prototype%"),
+  AsyncGeneratorPrototype: getIntrinsic("%AsyncGeneratorPrototype%"),
+  BigIntPrototypeToString: getIntrinsic("%BigInt.prototype.toString%"),
+  ObjectFreeze: getIntrinsic("%Object.freeze%"),
+  ObjectGetPrototypeOf: getIntrinsic("%Object.getPrototypeOf%"),
+  ObjectPrototypeIsPrototypeOf: getIntrinsic("%Object.prototype.isPrototypeOf%"),
+  StringPrototypeReplace: getIntrinsic("%String.prototype.replace%"),
+  SymbolFor: getIntrinsic("%Symbol.for%"),
+  SymbolToStringTag: getIntrinsic("%Symbol.toStringTag%"),
+  Uint8ArrayPrototype: getIntrinsic("%Uint8Array.prototype%"),
 };
 const __bootstrap = { primordials };
 

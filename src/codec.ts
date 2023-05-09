@@ -8,10 +8,9 @@ import {
   std,
   Ok,
   match,
-  Key,
-  KeyPart,
   escape_raw_bytes_into,
 } from "./rs-ponyfill";
+import { Key, KeyPart } from "./interface";
 // https://github.com/denoland/deno/blob/v1.33.2/ext/kv/lib.rs
 // Copyright 2018-2023 the Deno authors. All rights reserved. MIT license.
 
@@ -50,7 +49,7 @@ export function encode_key(key: Key): std.io.Result<Vec<u8>> {
     match(part, [
       [
         KeyPart.String(key),
-        () => {
+        (key) => {
           output.push(STRING);
           escape_raw_bytes_into(output, key.as_bytes());
           output.push(0);

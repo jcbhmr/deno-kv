@@ -1,5 +1,4 @@
 import {
-  KeyPart,
   Ok,
   Rc,
   Vec,
@@ -11,6 +10,7 @@ import {
   str,
   usize,
 } from "./rs-ponyfill";
+import { KeyPart } from "./interface";
 // Copyright 2018-2023 the Deno authors. All rights reserved. MIT license.
 
 const MAX_WRITE_KEY_SIZE_BYTES: usize = 2048;
