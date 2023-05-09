@@ -15,7 +15,7 @@ import {
   KvListSelector,
   KvMutation,
   openKv,
-} from "./index";
+} from "./ts-wrapper";
 
 declare global {
   namespace Deno {
@@ -41,7 +41,7 @@ declare global {
 }
 
 if (typeof Deno !== "undefined") {
-  if (process.env.DENO_KV_NO_WARNINGS !== "1") {
+  if (process.env.NODE_DENO_KV_NO_WARNINGS) {
     process.emitWarning("The Deno namespace is already defined");
   }
 }

@@ -5,9 +5,8 @@ export default defineConfig({
   build: {
     ssr: true,
     lib: {
-      entry: "src/index.ts",
+      entry: ["src/ts-wrapper.ts", "src/polyfill.ts"],
       formats: ["es"],
-      fileName: "index",
     },
   },
   plugins: [dts()],
